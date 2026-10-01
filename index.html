@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Ball Z Universe by Scherbakov</title>
+    <!-- Подключение шрифтов для аниме-стилистики -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-orange: #ff5722;
+            --saiyan-yellow: #ffd700;
+            --dark-bg: #0b0c10;
+            --card-bg: rgba(31, 40, 51, 0.6);
+            --text-color: #ffffff;
+            --goku-glow: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1f2833 0%, #0b0c10 100%);
+            transition: background 0.8s ease;
+        }
+
+        /* Навигационная панель */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(11, 12, 16, 0.85);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-orange);
+        }
+
+        .logo {
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            color: var(--primary-orange);
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px var(--saiyan-yellow);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--saiyan-yellow);
+        }
+
+        /* Главный баннер (Hero) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 6rem;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 87, 34, 0.8), 0 0 40px rgba(255, 215, 0, 0.6);
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+            animation: powerUp 2s infinite alternate;
+        }
+
+        .hero p {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #c5a1ff;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .cta-btn {
+            font-family: 'Orbitron', sans-serif;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary-orange), #ff9800);
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--saiyan-yellow);
+        }
+
+        /* Секция персонажей */
+        .section-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            text-align: center;
+            margin: 60px 0 40px;
+            color: var(--primary-orange);
+            text-shadow: 2px 2px var(--dark-bg);
+            letter-spacing: 2px;
+        }
+
+        .characters-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .char-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .char-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--saiyan-yellow);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .char-img-container {
+            height: 350px;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Силуэты/заглушки для бойцов с CSS-эффектом свечения */
+        .char-avatar {
+            font-size: 7rem;
+            transition: transform 0.5s;
+        }
+
+        .char-card:hover .char-avatar {
+            transform: scale(1.1);
+        }
+
+        .char-info {
+            padding: 25px;
+            background: rgba(20, 26, 35, 0.9);
+        }
+
+        .char-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--saiyan-yellow);
+        }
+
+        .char-race {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .char-desc {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #ddd;
+        }
+
+        .power-bar-wrapper {
+            margin-top: 15px;
+        }
+
+        .power-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .power-bar {
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .power-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff5722, #ffd700);
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
+
+        /* Футер */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #0b0c10;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 100px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        footer p a {
+            color: var(--primary-orange);
+            text-decoration: none;
+        }
+
+        /* Анимация ауры */
+        @keyframes powerUp {
+            0% {
+                text-shadow: 0 0 15px rgba(255, 87, 34, 0.6), 0 0 30px rgba(255, 215, 0, 0.4);
+            }
+            100% {
+                text-shadow: 0 0 25px rgba(255, 87, 34, 0.9), 0 0 50px rgba(255, 215, 0, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
+        /* Адаптивность для мобильных */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.8rem; }
+            .hero p { font-size: 1.1rem; }
+            header { flex-direction: column; gap: 15px; padding: 15px; }
+            nav ul li { margin: 0 15px; }
+            .section-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Навигация -->
+    <header>
+        <a href="#" class="logo">DBZ_UNIVERSE</a>
+        <nav>
+            <ul>
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#fighters">Бойцы</a></li>
+                <li><a href="#lore">Инфо</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Секция Hero -->
+    <section class="hero" id="home">
+        <h1>пробуди свою силу</h1>
+        <p>Добро пожаловать в мир Сайянов, Богов разрушения и Драконьего Жемчуга</p>
+        <button class="cta-btn" onclick="document.getElementById('fighters').scrollIntoView({behavior: 'smooth'});">Смотреть бойцов</button>
+    </section>
+
+    <!-- Раздел персонажей -->
+    <section id="fighters" style="padding: 20px 0;">
+        <h2 class="section-title">Легендарные Воины</h2>
+        
+        <div class="characters-container">
+            <!-- Карточка 1: Гоку -->
+            <div class="char-card" onclick="changeTheme('goku')">
+                <div class="char-img-container" style="background: radial-gradient(circle, rgba(255,152,0,0.2) 0%, rgba(0,0,0,1) 100%);">
+                    <span class="char-avatar">💥</span>
+                </div>
+                <div class="char-info">
+                    <div class="char-name">Сон Гоку</div>
+                    <div class="char-race">Сайян</div>
+                    <div class="char-desc">Защитник Земли, достигший уровня богов с помощью формы Автономного Ультра Инстинкта.</div>
+                    <div class="power-bar-wrapper">
+                        <div class="power-label"><span>Боевая сила (KI)</span><span>150,000,000+</span></div>
+                        <div class="power-bar"><div class="power-fill" data-power="100%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточка 2: Веджета -->
+            <div class="char-card" onclick="changeTheme('vegeta')">
+                <div class="char-img-container" style="background: radial-gradient(circle, rgba(33,150,243,0.2) 0%, rgba(0,0,0,1) 100%);">
